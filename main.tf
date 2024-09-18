@@ -114,7 +114,7 @@ resource "aws_bedrockagent_data_source" "knowledge_base_ds" {
   data_source_configuration {
     type = "S3"
     s3_configuration {
-      bucket_arn = "arn:aws:s3:::manuchn-tftest-bucket"
+      bucket_arn = "arn:aws:s3:::###" # Create an S3 bucket or reference existing
     }
   }
 }
