@@ -19,45 +19,45 @@ variable "foundation_model" {
 
 # instruction must be greater than 40 characters
 variable "instruction" {
-    description = "A narrative instruction to provide the agent as context."
-    type        = string
-    default     = "you are a chatbot eager to help the user find a new car."
-    
-    validation {
-      condition     = length(var.instruction) >= 40 
-      error_message = "Instruction string length must be at least 40."
-    }
+  description = "A narrative instruction to provide the agent as context."
+  type        = string
+  default     = "you are a chatbot eager to help the user find a new car."
+
+  validation {
+    condition     = length(var.instruction) >= 40
+    error_message = "Instruction string length must be at least 40."
+  }
 }
 
 variable "agent_description" {
-    description = "A description of agent."
-    type        = string
-    default     = null
+  description = "A description of agent."
+  type        = string
+  default     = null
 }
 
 variable "idle_session_ttl" {
-    description = "How long sessions should be kept open for the agent."
-    type        = number
-    default     = 600 
+  description = "How long sessions should be kept open for the agent."
+  type        = number
+  default     = 600
 }
 
 variable "kms_key_arn" {
-    description = "KMS encryption key to use for the agent."
-    type        = string
-    default     = null 
+  description = "KMS encryption key to use for the agent."
+  type        = string
+  default     = null
 }
 
-variable "tags" { 
-    description = "Tag bedrock agent resource."
-    type       = map(string)
-    default    = null 
+variable "tags" {
+  description = "Tag bedrock agent resource."
+  type        = map(string)
+  default     = null
 }
 
 # current bug when set to false, must be set to true
 variable "should_prepare_agent" {
   description = "Whether to prepare the agent for use."
-  type        = bool   
-  default     = true 
+  type        = bool
+  default     = true
 }
 
 # – Prompt Override Configuartion –
@@ -82,8 +82,8 @@ variable "base_prompt_template" {
 
 variable "parser_mode" {
   description = "Specifies whether to override the default parser Lambda function."
-  type       = string 
-  default    = null
+  type        = string
+  default     = null
 
   validation {
     condition     = var.parser_mode == "DEFAULT" || var.parser_mode == "OVERRIDDEN" || var.parser_mode == null
@@ -93,8 +93,8 @@ variable "parser_mode" {
 
 variable "prompt_creation_mode" {
   description = "Specifies whether to override the default prompt template."
-  type       = string
-  default    = null
+  type        = string
+  default     = null
 
   validation {
     condition     = var.prompt_creation_mode == "DEFAULT" || var.prompt_creation_mode == "OVERRIDDEN" || var.prompt_creation_mode == null
@@ -123,8 +123,8 @@ variable "override_lambda_arn" {
 
 variable "temperature" {
   description = "The likelihood of the model selecting higher-probability options while generating a response."
-  type       = number
-  default    = 0
+  type        = number
+  default     = 0
 
   validation {
     condition     = var.temperature >= 0 && var.temperature <= 1
@@ -134,8 +134,8 @@ variable "temperature" {
 
 variable "top_p" {
   description = "Cumulative probability cutoff for token selection."
-  type       = number
-  default    = 0.50
+  type        = number
+  default     = 0.50
 
   validation {
     condition     = var.top_p >= 0 && var.top_p <= 1.00
@@ -145,8 +145,8 @@ variable "top_p" {
 
 variable "top_k" {
   description = "Sample from the k most likely next tokens."
-  type       = number
-  default    = 50
+  type        = number
+  default     = 50
 
   validation {
     condition     = var.top_k >= 0 && var.top_k <= 500
@@ -156,8 +156,8 @@ variable "top_k" {
 
 variable "stop_sequences" {
   description = "A list of stop sequences."
-  type       = list(string)
-  default    = []
+  type        = list(string)
+  default     = []
 
   validation {
     condition     = length(var.stop_sequences) >= 0 && length(var.stop_sequences) <= 4
@@ -167,13 +167,13 @@ variable "stop_sequences" {
 
 variable "max_length" {
   description = "The maximum number of tokens to generate in the response."
-  type       = number
+  type        = number
   default     = 0 # change?
 
   validation {
     condition     = var.max_length >= 0 && var.max_length <= 4096
     error_message = "The max_length must be between 0 and 4096."
-  }  
+  }
 }
 
 # – Knowledge Base –
@@ -235,7 +235,7 @@ variable "vector_field" {
 variable "collection_arn" {
   description = "The ARN of the collection."
   type        = string
-  default     = null 
+  default     = null
 }
 
 variable "collection_name" {
@@ -246,25 +246,25 @@ variable "collection_name" {
 
 variable "kb_role_arn" {
   description = "The ARN of the IAM role with permission to invoke API operations on the knowledge base."
-  type       = string
-  default     = null 
+  type        = string
+  default     = null
 }
 
 variable "kb_description" {
   description = "Description of knowledge base."
-  type       = string
-  default    = "Terraform deployed Knowledge Base"
+  type        = string
+  default     = "Terraform deployed Knowledge Base"
 }
 
 variable "kb_type" {
   description = "The type of a knowledge base."
-  type       = string
-  default     = null 
+  type        = string
+  default     = null
 }
 
 variable "kb_embedding_model_arn" {
   description = "The ARN of the model used to create vector embeddings for the knowledge base."
-  type       = string
+  type        = string
   default     = "arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v1"
 }
 
@@ -277,10 +277,10 @@ variable "kb_storage_type" {
 variable "kb_state" {
   description = "State of knowledge base; whether it is enabled or disabled"
   type        = string
-  default     = "DISABLED"
+  default     = "ENABLED"
 
   validation {
-    condition     = var.kb_state == "ENABLED" || var.kb_state == "DISABLED" 
+    condition     = var.kb_state == "ENABLED" || var.kb_state == "DISABLED"
     error_message = "Not a valid kb_state."
   }
 }
@@ -289,7 +289,7 @@ variable "credentials_secret_arn" {
   description = "The ARN of the secret in Secrets Manager that is linked to your database"
   type        = string
   default     = null #
-} 
+}
 
 variable "database_name" {
   description = "Name of the database."
@@ -307,14 +307,14 @@ variable "endpoint" {
 
 variable "create_mongo_config" {
   description = "Whether or not to use MongoDB Atlas configuration"
-  type       = bool
-  default    = false
+  type        = bool
+  default     = false
 }
 
 variable "endpoint_service_name" {
   description = "MongoDB Atlas endpoint service name."
-  type       = string
-  default    = null
+  type        = string
+  default     = null
 }
 
 
@@ -323,16 +323,16 @@ variable "endpoint_service_name" {
 
 variable "create_opensearch_config" {
   description = "Whether or not to use Opensearch Serverless configuration"
-  type       = bool
-  default    = false
+  type        = bool
+  default     = false
 }
 
 # – Pinecone Configuration – 
 
 variable "create_pinecone_config" {
   description = "Whether or not to use Pinecone configuration"
-  type       = bool
-  default    = false
+  type        = bool
+  default     = false
 }
 
 variable "connection_string" {
@@ -351,25 +351,25 @@ variable "namespace" {
 
 variable "create_rds_config" {
   description = "Whether or not to use RDS configuration"
-  type       = bool
-  default    = false
+  type        = bool
+  default     = false
 }
 
 variable "resource_arn" {
   description = "The ARN of the vector store."
-  type       = string
+  type        = string
   default     = null #
 }
 
 variable "table_name" {
   description = "The name of the table in the database."
-  type       = string
+  type        = string
   default     = null #
 }
 
 variable "primary_key_field" {
   description = "The name of the field in which Bedrock stores the ID for each entry."
-  type       = string
+  type        = string
   default     = null #
 }
 
