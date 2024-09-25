@@ -10,10 +10,7 @@ resource "awscc_opensearchserverless_collection" "default_collection" {
   ]
 }
 
-
-
-# Encryption SecurityPolicy
-
+# Encryption Security Policy
 resource "aws_opensearchserverless_security_policy" "security_policy" {
   name = "awscc-security-policy"
   type = "encryption"
@@ -29,7 +26,6 @@ resource "aws_opensearchserverless_security_policy" "security_policy" {
 }
 
 # Network policy
-
 resource "aws_opensearchserverless_security_policy" "nw_policy" {
   name = "nw-policy"
   type = "network"
@@ -52,7 +48,6 @@ resource "aws_opensearchserverless_security_policy" "nw_policy" {
 
 
 # Data policy
-
 resource "aws_opensearchserverless_access_policy" "hashicorp_kb" {
   name = "os-access-policy"
   type = "data"
@@ -94,7 +89,6 @@ resource "aws_opensearchserverless_access_policy" "hashicorp_kb" {
 }
 
 # OpenSearch index
-
 provider "opensearch" {
   url         = awscc_opensearchserverless_collection.default_collection.collection_endpoint
   healthcheck = false
@@ -107,7 +101,7 @@ resource "time_sleep" "wait_before_index_creation" {
 
 resource "opensearch_index" "default_oss_index" {
   name                           = "bedrock-knowledge-base-default-index"
-  number_of_shards               = "2"
+  number_of_shards               = "1"
   number_of_replicas             = "0"
   index_knn                      = true
   index_knn_algo_param_ef_search = "512"

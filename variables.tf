@@ -8,7 +8,7 @@ variable "name_prefix" {
 variable "agent_name" {
   description = "The name of your agent."
   type        = string
-  default     = "BedrockAgents"
+  default     = "TerraformBedrockAgents"
 }
 
 variable "foundation_model" {
@@ -61,6 +61,11 @@ variable "should_prepare_agent" {
 }
 
 # – Prompt Override Configuartion –
+variable "prompt_override" {
+  description = "Whether to provide prompt override configuration."
+  type        = bool
+  default     = false
+}
 
 variable "prompt_type" {
   description = "The step in the agent sequence that this prompt configuration applies to."
@@ -187,13 +192,19 @@ variable "existing_kb" {
 variable "create_kb" {
   description = "Whether or not to attach a knowledge base."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "create_default_kb" {
   description = "Whether or not to create the default knowledge base."
   type        = bool
   default     = true
+}
+
+variable "kb_s3_data_source" {
+  description = "The S3 data source ARN for the knowledge base."
+  type        = string
+  default     = null
 }
 
 variable "kb_name" {
@@ -374,6 +385,12 @@ variable "primary_key_field" {
 }
 
 # – Action Group –
+
+variable "create_ag" {
+  description = "Whether or not to create an action group."
+  type        = bool
+  default     = false
+}
 
 variable "action_group_name" {
   description = "Name of the action group."

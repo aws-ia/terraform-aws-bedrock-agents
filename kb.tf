@@ -1,4 +1,4 @@
-# - Knowledge Base Default -
+# - Knowledge Base Default OpenSearch -
 
 resource "awscc_bedrock_knowledge_base" "knowledge_base_default" {
   count       = var.create_default_kb ? 1 : 0
@@ -25,8 +25,10 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_default" {
     }
   }
 }
-# - Mongo –
 
+# – Existing KBs –
+
+# - Mongo –
 resource "awscc_bedrock_knowledge_base" "knowledge_base_mongo" {
   count       = var.create_mongo_config ? 1 : 0
   name        = var.kb_name
@@ -114,6 +116,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_pinecone" {
     }
   }
 }
+
 # – RDS –
 resource "awscc_bedrock_knowledge_base" "knowledge_base_rds" {
   count       = var.create_rds_config ? 1 : 0

@@ -32,3 +32,12 @@ data "aws_iam_policy_document" "agent_permissions" {
     ]
   }
 }
+
+data "aws_iam_policy_document" "knowledge_base_permissions" {
+  count = var.create_kb ? 1 : 0
+
+  statement {
+    actions = ["bedrock:Retrieve"]
+    resources = ["arn:${data.aws_partition.current.partition}:bedrock:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:knowledge-base/*" ]
+  }
+}
