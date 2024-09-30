@@ -46,12 +46,18 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
       {
         "Effect" : "Allow",
         "Action" : [
-          "bedrock:InvokeModel",
           "s3:*",
           "logs:*",
           "aoss:*"
         ],
         "Resource" : "*"
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "bedrock:InvokeModel",
+        ],
+        "Resource" : var.kb_embedding_model_arn
       },
     ]
   })
