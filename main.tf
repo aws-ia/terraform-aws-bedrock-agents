@@ -46,7 +46,7 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
       {
         "Effect" : "Allow",
         "Action" : [
-          "bedrock:*",
+          "bedrock:InvokeModel",
           "s3:*",
           "logs:*",
           "aoss:*"
