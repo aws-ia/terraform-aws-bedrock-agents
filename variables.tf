@@ -173,7 +173,7 @@ variable "stop_sequences" {
 variable "max_length" {
   description = "The maximum number of tokens to generate in the response."
   type        = number
-  default     = 0 # change?
+  default     = 0 
 
   validation {
     condition     = var.max_length >= 0 && var.max_length <= 4096
@@ -252,7 +252,7 @@ variable "collection_arn" {
 variable "collection_name" {
   description = "The name of the collection."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 variable "kb_role_arn" {
@@ -282,7 +282,7 @@ variable "kb_embedding_model_arn" {
 variable "kb_storage_type" {
   description = "The storage type of a knowledge base."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 variable "kb_state" {
@@ -299,19 +299,19 @@ variable "kb_state" {
 variable "credentials_secret_arn" {
   description = "The ARN of the secret in Secrets Manager that is linked to your database"
   type        = string
-  default     = null #
+  default     = null 
 }
 
 variable "database_name" {
   description = "Name of the database."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 variable "endpoint" {
   description = "Database endpoint"
   type        = string
-  default     = null #
+  default     = null 
 }
 
 # – MongoDB Atlas Configuration – 
@@ -349,7 +349,7 @@ variable "create_pinecone_config" {
 variable "connection_string" {
   description = "The endpoint URL for your index management page."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 variable "namespace" {
@@ -369,19 +369,19 @@ variable "create_rds_config" {
 variable "resource_arn" {
   description = "The ARN of the vector store."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 variable "table_name" {
   description = "The name of the table in the database."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 variable "primary_key_field" {
   description = "The name of the field in which Bedrock stores the ID for each entry."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 # – Action Group –
@@ -395,31 +395,31 @@ variable "create_ag" {
 variable "action_group_name" {
   description = "Name of the action group."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 variable "action_group_state" {
   description = "State of the action group."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 variable "action_group_description" {
   description = "Description of the action group."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 variable "parent_action_group_signature" {
   description = "Action group signature for a builtin action."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 variable "skip_resource_in_use" {
   description = "Specifies whether to allow deleting action group while it is in use."
   type        = bool
-  default     = null #
+  default     = null 
 }
 
 # – Action Group Executor – 
@@ -427,13 +427,13 @@ variable "skip_resource_in_use" {
 variable "custom_control" {
   description = "Custom control of action execution."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 variable "lambda_action_group_executor" {
   description = "ARN of Lambda."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 # – Action Group API Schema –
@@ -441,19 +441,19 @@ variable "lambda_action_group_executor" {
 variable "api_schema_payload" {
   description = "String OpenAPI Payload."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 variable "api_schema_s3_bucket_name" {
   description = "A bucket in S3."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 variable "api_schema_s3_object_key" {
   description = "An object key in S3."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 # – Function Schema –
@@ -461,19 +461,19 @@ variable "api_schema_s3_object_key" {
 variable "function_name" {
   description = "Name for a resource."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 variable "function_description" {
   description = "Description of function."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 variable "function_parameters_description" {
   description = "Description of function parameter."
   type        = string
-  default     = null #
+  default     = null 
 }
 
 variable "function_parameters_required" {
@@ -485,5 +485,5 @@ variable "function_parameters_required" {
 variable "function_parameters_type" {
   description = "Parameter type."
   type        = string
-  default     = null #
+  default     = null 
 }
