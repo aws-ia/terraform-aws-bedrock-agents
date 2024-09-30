@@ -53,13 +53,6 @@ variable "tags" {
   default     = null
 }
 
-# current bug when set to false, must be set to true
-variable "should_prepare_agent" {
-  description = "Whether to prepare the agent for use."
-  type        = bool
-  default     = true
-}
-
 # – Prompt Override Configuartion –
 variable "prompt_override" {
   description = "Whether to provide prompt override configuration."

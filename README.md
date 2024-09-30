@@ -15,6 +15,7 @@ This file will contain any instructional information about this module.
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~>5.0 |
 | <a name="requirement_awscc"></a> [awscc](#requirement\_awscc) | >= 1.0.0 |
 | <a name="requirement_opensearch"></a> [opensearch](#requirement\_opensearch) | = 2.2.0 |
+| <a name="requirement_time"></a> [time](#requirement\_time) | ~> 0.6 |
 
 ## Providers
 
@@ -23,7 +24,7 @@ This file will contain any instructional information about this module.
 | <a name="provider_aws"></a> [aws](#provider\_aws) | ~>5.0 |
 | <a name="provider_awscc"></a> [awscc](#provider\_awscc) | >= 1.0.0 |
 | <a name="provider_opensearch"></a> [opensearch](#provider\_opensearch) | = 2.2.0 |
-| <a name="provider_time"></a> [time](#provider\_time) | n/a |
+| <a name="provider_time"></a> [time](#provider\_time) | ~> 0.6 |
 
 ## Modules
 
@@ -121,7 +122,6 @@ No modules.
 | <a name="input_prompt_state"></a> [prompt\_state](#input\_prompt\_state) | Specifies whether to allow the agent to carry out the step specified in the promptType. | `string` | `null` | no |
 | <a name="input_prompt_type"></a> [prompt\_type](#input\_prompt\_type) | The step in the agent sequence that this prompt configuration applies to. | `string` | `null` | no |
 | <a name="input_resource_arn"></a> [resource\_arn](#input\_resource\_arn) | The ARN of the vector store. | `string` | `null` | no |
-| <a name="input_should_prepare_agent"></a> [should\_prepare\_agent](#input\_should\_prepare\_agent) | Whether to prepare the agent for use. | `bool` | `true` | no |
 | <a name="input_skip_resource_in_use"></a> [skip\_resource\_in\_use](#input\_skip\_resource\_in\_use) | Specifies whether to allow deleting action group while it is in use. | `bool` | `null` | no |
 | <a name="input_stop_sequences"></a> [stop\_sequences](#input\_stop\_sequences) | A list of stop sequences. | `list(string)` | `[]` | no |
 | <a name="input_table_name"></a> [table\_name](#input\_table\_name) | The name of the table in the database. | `string` | `null` | no |

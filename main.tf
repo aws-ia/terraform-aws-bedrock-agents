@@ -111,7 +111,7 @@ locals {
 }
 
 resource "awscc_bedrock_agent" "bedrock_agent" {
-  agent_name                  = "${var.agent_name}"  
+  agent_name                  = var.agent_name  
   foundation_model            = var.foundation_model  
   instruction                 = var.instruction       
   description                 = var.agent_description 
@@ -141,8 +141,8 @@ resource "awscc_bedrock_agent" "bedrock_agent" {
   # open issue: https://github.com/hashicorp/terraform-provider-awscc/issues/2004
   # auto_prepare needs to be set to true
   auto_prepare    = true
-  knowledge_bases = local.kb_result != [] ? local.kb_result : null
-  action_groups   = local.action_group_result != [] ? local.action_group_result : null
+  knowledge_bases = length(local.kb_result) > 0 ? local.kb_result : null
+  action_groups   = length(local.action_group_result) > 0 ? local.action_group_result : null
 }
 
 

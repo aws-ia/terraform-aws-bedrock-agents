@@ -13,7 +13,9 @@ No providers.
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_terraform-agents"></a> [terraform-agents](#module\_terraform-agents) | ../.. | n/a |
 
 ## Resources
 
