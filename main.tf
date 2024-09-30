@@ -46,9 +46,21 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
       {
         "Effect" : "Allow",
         "Action" : [
-          "s3:*",
-          "logs:*",
-          "aoss:*"
+          "s3:ListBucket",
+        ],
+        "Resource" : var.kb_s3_data_source == null ? awscc_s3_bucket.s3_data_source[0].arn : var.kb_s3_data_source
+      },
+       {
+        "Effect" : "Allow",
+        "Action" : [
+          "s3:GetObject",
+        ],
+        "Resource" : var.kb_s3_data_source == null ? "${awscc_s3_bucket.s3_data_source[0].arn}/*" : var.kb_s3_data_source 
+      },
+       {
+        "Effect" : "Allow",
+        "Action" : [
+          "aoss:APIAccessAll"
         ],
         "Resource" : "*"
       },
