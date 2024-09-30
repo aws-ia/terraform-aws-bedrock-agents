@@ -182,18 +182,18 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_default" {
     type = "OPENSEARCH_SERVERLESS"
     opensearch_serverless_configuration = {
       collection_arn    = awscc_opensearchserverless_collection.default_collection.arn
-      vector_index_name = var.vector_index_name # bedrock-knowledge-base-default-index
+      vector_index_name = var.vector_index_name 
       field_mapping = {
-        metadata_field = var.metadata_field # "AMAZON_BEDROCK_METADATA
-        text_field     = var.text_field     # "AMAZON_BEDROCK_TEXT_CHUNK"
-        vector_field   = var.vector_field   # "bedrock-knowledge-base-default-vector"
+        metadata_field = var.metadata_field 
+        text_field     = var.text_field     
+        vector_field   = var.vector_field   
       }
     }
   }
   knowledge_base_configuration = {
     type = "VECTOR"
     vector_knowledge_base_configuration = {
-      embedding_model_arn = var.kb_embedding_model_arn # "arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v1"
+      embedding_model_arn = var.kb_embedding_model_arn 
     }
   }
 }
