@@ -1,3 +1,9 @@
+resource "random_string" "solution_prefix" {
+  length  = 4
+  special = false
+  upper   = false
+}
+
 # – IAM – 
 
 resource "aws_iam_role" "agent_role" {
@@ -19,7 +25,7 @@ resource "aws_iam_role_policy" "kb_policy" {
 # Define the IAM role for Amazon Bedrock Knowledge Base
 resource "aws_iam_role" "bedrock_knowledge_base_role" {
   count = var.kb_role_arn != null ? 0 : 1
-  name  = "AmazonBedrockExecutionRoleForKnowledgeBase"
+  name  = "${random_string.solution_prefix.result}-AmazonBedrockExecutionRoleForKnowledgeBase"
 
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -38,7 +44,7 @@ resource "aws_iam_role" "bedrock_knowledge_base_role" {
 # Attach a policy to allow necessary permissions for the Bedrock Knowledge Base
 resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
   count = var.kb_role_arn != null ? 0 : 1
-  name  = "AmazonBedrockKnowledgeBasePolicy"
+  name  = "${random_string.solution_prefix.result}-AmazonBedrockKnowledgeBasePolicy"
 
   policy = jsonencode({
     "Version" : "2012-10-17",
@@ -129,7 +135,7 @@ locals {
 }
 
 resource "awscc_bedrock_agent" "bedrock_agent" {
-  agent_name                  = var.agent_name  
+  agent_name                  = "${random_string.solution_prefix.result}-${var.agent_name}"  
   foundation_model            = var.foundation_model  
   instruction                 = var.instruction       
   description                 = var.agent_description 
@@ -167,7 +173,7 @@ resource "awscc_bedrock_agent" "bedrock_agent" {
 # - Knowledge Base Data source –
 resource "awscc_s3_bucket" "s3_data_source" {
   count = var.kb_s3_data_source == null ? 1 : 0
-  bucket_name = "${var.kb_name}-default-bucket"
+  bucket_name = "${random_string.solution_prefix.result}-${var.kb_name}-default-bucket"
 
   tags = [{
     key   = "Name"
@@ -179,7 +185,7 @@ resource "awscc_s3_bucket" "s3_data_source" {
 resource "aws_bedrockagent_data_source" "knowledge_base_ds" {
   count             = 1
   knowledge_base_id = awscc_bedrock_knowledge_base.knowledge_base_default[0].id
-  name              = "${var.kb_name}DataSource"
+  name              = "${random_string.solution_prefix.result}-${var.kb_name}DataSource"
   data_source_configuration {
     type = "S3"
     s3_configuration {
@@ -192,7 +198,7 @@ resource "aws_bedrockagent_data_source" "knowledge_base_ds" {
 
 resource "awscc_bedrock_knowledge_base" "knowledge_base_default" {
   count       = var.create_default_kb ? 1 : 0
-  name        = var.kb_name
+  name        = "${random_string.solution_prefix.result}-${var.kb_name}"
   description = var.kb_description
   role_arn    = var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn
 
@@ -221,7 +227,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_default" {
 # - Mongo –
 resource "awscc_bedrock_knowledge_base" "knowledge_base_mongo" {
   count       = var.create_mongo_config ? 1 : 0
-  name        = var.kb_name
+  name        = "${random_string.solution_prefix.result}-${var.kb_name}"
   description = var.kb_description
   role_arn    = var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn
   tags        = var.kb_tags
@@ -254,7 +260,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_mongo" {
 # – OpenSearch –
 resource "awscc_bedrock_knowledge_base" "knowledge_base_opensearch" {
   count       = var.create_opensearch_config ? 1 : 0
-  name        = var.kb_name
+  name        = "${random_string.solution_prefix.result}-${var.kb_name}"
   description = var.kb_description
   role_arn    = var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn
   tags        = var.kb_tags
@@ -282,7 +288,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_opensearch" {
 # – Pinecone –
 resource "awscc_bedrock_knowledge_base" "knowledge_base_pinecone" {
   count       = var.create_pinecone_config ? 1 : 0
-  name        = var.kb_name
+  name        = "${random_string.solution_prefix.result}-${var.kb_name}"
   description = var.kb_description
   role_arn    = var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn
   tags        = var.kb_tags
@@ -310,7 +316,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_pinecone" {
 # – RDS –
 resource "awscc_bedrock_knowledge_base" "knowledge_base_rds" {
   count       = var.create_rds_config ? 1 : 0
-  name        = var.kb_name
+  name        = "${random_string.solution_prefix.result}-${var.kb_name}"
   description = var.kb_description
   role_arn    = var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn
   tags        = var.kb_tags
@@ -342,7 +348,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_rds" {
 
 # Create a Collection
 resource "awscc_opensearchserverless_collection" "default_collection" {
-  name        = "default-collection"
+  name        = "${random_string.solution_prefix.result}-default-collection"
   type        = "VECTORSEARCH"
   description = "Default collection created by Amazon Bedrock Knowledge base."
   depends_on = [
@@ -352,12 +358,12 @@ resource "awscc_opensearchserverless_collection" "default_collection" {
 
 # Encryption Security Policy
 resource "aws_opensearchserverless_security_policy" "security_policy" {
-  name = "awscc-security-policy"
+  name = "${random_string.solution_prefix.result}-awscc-security-policy"
   type = "encryption"
   policy = jsonencode({
     Rules = [
       {
-        Resource = ["collection/default-collection"]
+        Resource = ["collection/${random_string.solution_prefix.result}-default-collection"]
         ResourceType = "collection"
       }
     ],
@@ -367,18 +373,18 @@ resource "aws_opensearchserverless_security_policy" "security_policy" {
 
 # Network policy
 resource "aws_opensearchserverless_security_policy" "nw_policy" {
-  name = "nw-policy"
+  name = "${random_string.solution_prefix.result}-nw-policy"
   type = "network"
   policy = jsonencode([
     {
       Rules = [
         {
           ResourceType = "collection"
-          Resource = ["collection/default-collection"]
+          Resource = ["collection/${random_string.solution_prefix.result}-default-collection"]
         },
         {
           ResourceType = "dashboard"
-          Resource = ["collection/default-collection"]
+          Resource = ["collection/${random_string.solution_prefix.result}-default-collection"]
         }
       ]
       AllowFromPublic = true
@@ -389,7 +395,7 @@ resource "aws_opensearchserverless_security_policy" "nw_policy" {
 
 # Data policy
 resource "aws_opensearchserverless_access_policy" "hashicorp_kb" {
-  name = "os-access-policy"
+  name = "${random_string.solution_prefix.result}-os-access-policy"
   type = "data"
   policy = jsonencode([
     {
@@ -440,7 +446,7 @@ resource "time_sleep" "wait_before_index_creation" {
 }
 
 resource "opensearch_index" "default_oss_index" {
-  name                           = "bedrock-knowledge-base-default-index"
+  name                           = "${random_string.solution_prefix.result}-bedrock-knowledge-base-default-index"
   number_of_shards               = "1"
   number_of_replicas             = "0"
   index_knn                      = true
