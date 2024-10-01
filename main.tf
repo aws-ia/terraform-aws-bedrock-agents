@@ -348,7 +348,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_rds" {
 
 # Create a Collection
 resource "awscc_opensearchserverless_collection" "default_collection" {
-  name        = "${random_string.solution_prefix.result}-default-collection"
+  name        = "default-collection-${random_string.solution_prefix.result}"
   type        = "VECTORSEARCH"
   description = "Default collection created by Amazon Bedrock Knowledge base."
   depends_on = [
@@ -358,12 +358,12 @@ resource "awscc_opensearchserverless_collection" "default_collection" {
 
 # Encryption Security Policy
 resource "aws_opensearchserverless_security_policy" "security_policy" {
-  name = "${random_string.solution_prefix.result}-awscc-security-policy"
+  name = "$awscc-security-policy-${random_string.solution_prefix.result}"
   type = "encryption"
   policy = jsonencode({
     Rules = [
       {
-        Resource = ["collection/${random_string.solution_prefix.result}-default-collection"]
+        Resource = ["collection/default-collection-${random_string.solution_prefix.result}"]
         ResourceType = "collection"
       }
     ],
@@ -373,18 +373,18 @@ resource "aws_opensearchserverless_security_policy" "security_policy" {
 
 # Network policy
 resource "aws_opensearchserverless_security_policy" "nw_policy" {
-  name = "${random_string.solution_prefix.result}-nw-policy"
+  name = "nw-policy-${random_string.solution_prefix.result}"
   type = "network"
   policy = jsonencode([
     {
       Rules = [
         {
           ResourceType = "collection"
-          Resource = ["collection/${random_string.solution_prefix.result}-default-collection"]
+          Resource = ["collection/default-collection-${random_string.solution_prefix.result}"]
         },
         {
           ResourceType = "dashboard"
-          Resource = ["collection/${random_string.solution_prefix.result}-default-collection"]
+          Resource = ["collection/default-collection-${random_string.solution_prefix.result}"]
         }
       ]
       AllowFromPublic = true
@@ -395,7 +395,7 @@ resource "aws_opensearchserverless_security_policy" "nw_policy" {
 
 # Data policy
 resource "aws_opensearchserverless_access_policy" "hashicorp_kb" {
-  name = "${random_string.solution_prefix.result}-os-access-policy"
+  name = "os-access-policy-${random_string.solution_prefix.result}"
   type = "data"
   policy = jsonencode([
     {
@@ -446,7 +446,7 @@ resource "time_sleep" "wait_before_index_creation" {
 }
 
 resource "opensearch_index" "default_oss_index" {
-  name                           = "${random_string.solution_prefix.result}-bedrock-knowledge-base-default-index"
+  name                           = "bedrock-knowledge-base-default-index-${random_string.solution_prefix.result}"
   number_of_shards               = "1"
   number_of_replicas             = "0"
   index_knn                      = true
