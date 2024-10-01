@@ -4,10 +4,12 @@ terraform {
     aws = {
       source  = "hashicorp/aws"
       version = "~>5.0"
+      region  = "us-east-1"
     }
     awscc = {
       source  = "hashicorp/awscc"
       version = ">= 1.0.0"
+      region  = "us-east-1"
     }
     opensearch = {
       source  = "opensearch-project/opensearch"
