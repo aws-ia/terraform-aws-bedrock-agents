@@ -358,7 +358,7 @@ resource "awscc_opensearchserverless_collection" "default_collection" {
 
 # Encryption Security Policy
 resource "aws_opensearchserverless_security_policy" "security_policy" {
-  name = "$awscc-security-policy-${random_string.solution_prefix.result}"
+  name = "awscc-security-policy-${random_string.solution_prefix.result}"
   type = "encryption"
   policy = jsonencode({
     Rules = [
