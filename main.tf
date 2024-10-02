@@ -291,7 +291,6 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_opensearch" {
   depends_on = [time_sleep.index_availability_delay]
 }
 
-
 # – Pinecone –
 resource "awscc_bedrock_knowledge_base" "knowledge_base_pinecone" {
   count       = var.create_pinecone_config ? 1 : 0
