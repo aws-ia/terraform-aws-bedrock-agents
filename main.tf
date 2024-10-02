@@ -257,6 +257,11 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_mongo" {
   }
 }
 
+resource "time_sleep" "index_availability_delay" {
+  depends_on      = [opensearch_index.default_oss_index]
+  create_duration = "60s" 
+}
+
 # – OpenSearch –
 resource "awscc_bedrock_knowledge_base" "knowledge_base_opensearch" {
   count       = var.create_opensearch_config ? 1 : 0
@@ -283,6 +288,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_opensearch" {
       embedding_model_arn = var.kb_embedding_model_arn
     }
   }
+    depends_on = [ time_sleep.index_availability_delay ]
 }
 
 # – Pinecone –
