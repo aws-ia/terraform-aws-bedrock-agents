@@ -17,7 +17,7 @@ resource "aws_iam_role_policy" "agent_policy" {
 }
 
 resource "aws_iam_role_policy" "kb_policy" {
-  count = var.create_kb ? 1 : 0
+  count  = var.create_kb ? 1 : 0
   policy = data.aws_iam_policy_document.knowledge_base_permissions[0].json
   role   = aws_iam_role.agent_role.id
 }
@@ -56,14 +56,14 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
         ],
         "Resource" : var.kb_s3_data_source == null ? awscc_s3_bucket.s3_data_source[0].arn : var.kb_s3_data_source
       },
-       {
+      {
         "Effect" : "Allow",
         "Action" : [
           "s3:GetObject",
         ],
-        "Resource" : var.kb_s3_data_source == null ? "${awscc_s3_bucket.s3_data_source[0].arn}/*" : var.kb_s3_data_source 
+        "Resource" : var.kb_s3_data_source == null ? "${awscc_s3_bucket.s3_data_source[0].arn}/*" : var.kb_s3_data_source
       },
-       {
+      {
         "Effect" : "Allow",
         "Action" : [
           "aoss:APIAccessAll"
@@ -102,10 +102,10 @@ locals {
 
   counter_action_group = var.create_ag ? [1] : []
   action_group_value = {
-    action_group_name = var.action_group_name
-    description       = var.action_group_description
-    action_group_state = var.action_group_state
-    parent_action_group_signature = var.parent_action_group_signature
+    action_group_name                    = var.action_group_name
+    description                          = var.action_group_description
+    action_group_state                   = var.action_group_state
+    parent_action_group_signature        = var.parent_action_group_signature
     skip_resource_in_use_check_on_delete = var.skip_resource_in_use
     api_schema = {
       payload = var.api_schema_payload
@@ -116,11 +116,11 @@ locals {
     }
     action_group_executor = {
       custom_control = var.custom_control
-      lambda = var.lambda_action_group_executor
+      lambda         = var.lambda_action_group_executor
     }
     function_schema = {
       functions = [{
-        name = var.function_name
+        name        = var.function_name
         description = var.function_description
         parameters = {
           description = var.function_parameters_description
@@ -135,31 +135,31 @@ locals {
 }
 
 resource "awscc_bedrock_agent" "bedrock_agent" {
-  agent_name                  = "${random_string.solution_prefix.result}-${var.agent_name}"  
-  foundation_model            = var.foundation_model  
-  instruction                 = var.instruction       
-  description                 = var.agent_description 
-  idle_session_ttl_in_seconds = var.idle_session_ttl  
+  agent_name                  = "${random_string.solution_prefix.result}-${var.agent_name}"
+  foundation_model            = var.foundation_model
+  instruction                 = var.instruction
+  description                 = var.agent_description
+  idle_session_ttl_in_seconds = var.idle_session_ttl
   agent_resource_role_arn     = aws_iam_role.agent_role.arn
-  customer_encryption_key_arn = var.kms_key_arn 
-  tags                        = var.tags        
+  customer_encryption_key_arn = var.kms_key_arn
+  tags                        = var.tags
   prompt_override_configuration = var.prompt_override == false ? null : {
-     prompt_configurations = [{
-       prompt_type = var.prompt_type
-       inference_configuration = {
-         temperature    = var.temperature
-         top_p          = var.top_p
-         top_k          = var.top_k
-         stop_sequences = var.stop_sequences
-         maximum_length = var.max_length
-       }
-       base_prompt_template = var.base_prompt_template
-       parser_mode          = var.parser_mode
-       prompt_creation_mode = var.prompt_creation_mode
-       prompt_state         = var.prompt_state
+    prompt_configurations = [{
+      prompt_type = var.prompt_type
+      inference_configuration = {
+        temperature    = var.temperature
+        top_p          = var.top_p
+        top_k          = var.top_k
+        stop_sequences = var.stop_sequences
+        maximum_length = var.max_length
+      }
+      base_prompt_template = var.base_prompt_template
+      parser_mode          = var.parser_mode
+      prompt_creation_mode = var.prompt_creation_mode
+      prompt_state         = var.prompt_state
 
-     }]
-     override_lambda = var.override_lambda_arn
+    }]
+    override_lambda = var.override_lambda_arn
 
   }
   # open issue: https://github.com/hashicorp/terraform-provider-awscc/issues/2004
@@ -172,7 +172,7 @@ resource "awscc_bedrock_agent" "bedrock_agent" {
 
 # - Knowledge Base Data source –
 resource "awscc_s3_bucket" "s3_data_source" {
-  count = var.kb_s3_data_source == null ? 1 : 0
+  count       = var.kb_s3_data_source == null ? 1 : 0
   bucket_name = "${random_string.solution_prefix.result}-${var.kb_name}-default-bucket"
 
   tags = [{
@@ -206,18 +206,18 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_default" {
     type = "OPENSEARCH_SERVERLESS"
     opensearch_serverless_configuration = {
       collection_arn    = awscc_opensearchserverless_collection.default_collection.arn
-      vector_index_name = var.vector_index_name 
+      vector_index_name = var.vector_index_name
       field_mapping = {
-        metadata_field = var.metadata_field 
-        text_field     = var.text_field     
-        vector_field   = var.vector_field   
+        metadata_field = var.metadata_field
+        text_field     = var.text_field
+        vector_field   = var.vector_field
       }
     }
   }
   knowledge_base_configuration = {
     type = "VECTOR"
     vector_knowledge_base_configuration = {
-      embedding_model_arn = var.kb_embedding_model_arn 
+      embedding_model_arn = var.kb_embedding_model_arn
     }
   }
 }
@@ -259,7 +259,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_mongo" {
 
 resource "time_sleep" "index_availability_delay" {
   depends_on      = [opensearch_index.default_oss_index]
-  create_duration = "60s" 
+  create_duration = "60s"
 }
 
 # – OpenSearch –
@@ -288,8 +288,9 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_opensearch" {
       embedding_model_arn = var.kb_embedding_model_arn
     }
   }
-    depends_on = [ time_sleep.index_availability_delay ]
+  depends_on = [time_sleep.index_availability_delay]
 }
+
 
 # – Pinecone –
 resource "awscc_bedrock_knowledge_base" "knowledge_base_pinecone" {
@@ -369,7 +370,7 @@ resource "aws_opensearchserverless_security_policy" "security_policy" {
   policy = jsonencode({
     Rules = [
       {
-        Resource = ["collection/default-collection-${random_string.solution_prefix.result}"]
+        Resource     = ["collection/default-collection-${random_string.solution_prefix.result}"]
         ResourceType = "collection"
       }
     ],
@@ -386,11 +387,11 @@ resource "aws_opensearchserverless_security_policy" "nw_policy" {
       Rules = [
         {
           ResourceType = "collection"
-          Resource = ["collection/default-collection-${random_string.solution_prefix.result}"]
+          Resource     = ["collection/default-collection-${random_string.solution_prefix.result}"]
         },
         {
           ResourceType = "dashboard"
-          Resource = ["collection/default-collection-${random_string.solution_prefix.result}"]
+          Resource     = ["collection/default-collection-${random_string.solution_prefix.result}"]
         }
       ]
       AllowFromPublic = true
