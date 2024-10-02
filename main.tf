@@ -25,7 +25,7 @@ resource "aws_iam_role_policy" "kb_policy" {
 # Define the IAM role for Amazon Bedrock Knowledge Base
 resource "aws_iam_role" "bedrock_knowledge_base_role" {
   count = var.kb_role_arn != null ? 0 : 1
-  name  = "${random_string.solution_prefix.result}-AmazonBedrockExecutionRoleForKnowledgeBase"
+  name  = "AmazonBedrockExecutionRoleForKnowledgeBase-${random_string.solution_prefix.result}"
 
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -44,7 +44,7 @@ resource "aws_iam_role" "bedrock_knowledge_base_role" {
 # Attach a policy to allow necessary permissions for the Bedrock Knowledge Base
 resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
   count = var.kb_role_arn != null ? 0 : 1
-  name  = "${random_string.solution_prefix.result}-AmazonBedrockKnowledgeBasePolicy"
+  name  = "AmazonBedrockKnowledgeBasePolicy-${random_string.solution_prefix.result}"
 
   policy = jsonencode({
     "Version" : "2012-10-17",
@@ -68,7 +68,7 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
         "Action" : [
           "aoss:APIAccessAll"
         ],
-        "Resource" : "*"
+        "Resource" : awscc_opensearchserverless_collection.default_collection.arn
       },
       {
         "Effect" : "Allow",
@@ -441,10 +441,7 @@ resource "aws_opensearchserverless_access_policy" "hashicorp_kb" {
 }
 
 # OpenSearch index
-provider "opensearch" {
-  url         = awscc_opensearchserverless_collection.default_collection.collection_endpoint
-  healthcheck = false
-}
+
 
 resource "time_sleep" "wait_before_index_creation" {
   depends_on      = [awscc_opensearchserverless_collection.default_collection]

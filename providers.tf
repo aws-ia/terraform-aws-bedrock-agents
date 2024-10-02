@@ -23,3 +23,8 @@ terraform {
     }
   }
 }
+
+provider "opensearch" {
+  url         = awscc_opensearchserverless_collection.default_collection.collection_endpoint
+  healthcheck = false
+}
