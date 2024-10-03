@@ -77,6 +77,14 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
         ],
         "Resource" : var.kb_embedding_model_arn
       },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "bedrock:ListFoundationModels",
+          "bedrock:ListCustomModels"
+        ],
+        "Resource" : "*"
+      },
     ]
   })
 }
@@ -358,7 +366,8 @@ resource "awscc_opensearchserverless_collection" "default_collection" {
   type        = "VECTORSEARCH"
   description = "Default collection created by Amazon Bedrock Knowledge base."
   depends_on = [
-    aws_opensearchserverless_security_policy.security_policy
+    aws_opensearchserverless_security_policy.security_policy,
+    aws_opensearchserverless_security_policy.nw_policy
   ]
 }
 
@@ -400,7 +409,7 @@ resource "aws_opensearchserverless_security_policy" "nw_policy" {
 
 
 # Data policy
-resource "aws_opensearchserverless_access_policy" "hashicorp_kb" {
+resource "aws_opensearchserverless_access_policy" "data_policy" {
   name = "os-access-policy-${random_string.solution_prefix.result}"
   type = "data"
   policy = jsonencode([
@@ -434,7 +443,7 @@ resource "aws_opensearchserverless_access_policy" "hashicorp_kb" {
         }
       ],
       Principal = [
-        aws_iam_role.bedrock_knowledge_base_role[0].arn,
+        var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn,
         data.aws_caller_identity.current.arn
       ]
     }
