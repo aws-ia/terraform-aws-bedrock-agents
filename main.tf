@@ -428,7 +428,8 @@ resource "aws_opensearchserverless_access_policy" "hashicorp_kb" {
           Permission = [
             "aoss:CreateCollectionItems",
             "aoss:DescribeCollectionItems",
-            "aoss:UpdateCollectionItems"
+            "aoss:UpdateCollectionItems",
+            "aoss:*",
           ]
         }
       ],
