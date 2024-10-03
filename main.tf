@@ -445,7 +445,7 @@ resource "aws_opensearchserverless_access_policy" "hashicorp_kb" {
 
 resource "time_sleep" "wait_before_index_creation" {
   depends_on      = [awscc_opensearchserverless_collection.default_collection]
-  create_duration = "60s" # Wait for 60 seconds before creating the index
+  create_duration = "120s" # Wait for 60 seconds before creating the index
 }
 
 resource "opensearch_index" "default_oss_index" {
