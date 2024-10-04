@@ -3,9 +3,9 @@ data "aws_partition" "current" {}
 data "aws_region" "current" {}
 
 locals {
-  region     = local.region
-  account_id = local.account_id
-  partition  = local.partition
+  region     = data.aws_region.current.name
+  account_id = data.aws_caller_identity.current.account_id
+  partition  = data.aws_partition.current.partition
 }
 
 data "aws_iam_policy_document" "agent_trust" {
