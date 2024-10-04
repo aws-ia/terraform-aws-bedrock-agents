@@ -91,9 +91,9 @@ resource "aws_iam_role_policy_attachment" "bedrock_knowledge_base_policy_attachm
 }
 
 resource "aws_iam_role_policy" "bedrock_kb_oss" {
-  count      = var.kb_role_arn != null ? 0 : 1
-  name = "AmazonBedrockOSSPolicyForKnowledgeBase_${var.kb_name}"
-  role = aws_iam_role.bedrock_knowledge_base_role[count.index].name
+  count = var.kb_role_arn != null ? 0 : 1
+  name  = "AmazonBedrockOSSPolicyForKnowledgeBase_${var.kb_name}"
+  role  = aws_iam_role.bedrock_knowledge_base_role[count.index].name
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [

@@ -24,7 +24,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_default" {
       embedding_model_arn = var.kb_embedding_model_arn
     }
   }
-    depends_on = [time_sleep.index_availability_delay]
+  depends_on = [time_sleep.index_availability_delay]
 }
 
 # – Existing KBs –

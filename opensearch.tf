@@ -134,6 +134,6 @@ resource "opensearch_index" "default_oss_index" {
   force_destroy                  = true
   depends_on                     = [time_sleep.wait_before_index_creation]
   lifecycle {
-    
+
   }
 }
