@@ -15,9 +15,9 @@ locals {
     knowledge_base_state = var.kb_state
   }
   kb_result = [for count in local.counter_kb : local.knowledge_bases_value]
-  region=data.aws_region.current.name
-  account_id=data.aws_caller_identity.current.account_id
-  partition=data.aws_partition.current.partition
+  region=local.region
+  account_id=local.account_id
+  partition=local.partition
 
 
   counter_action_group = var.create_ag ? [1] : []
