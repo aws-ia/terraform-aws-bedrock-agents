@@ -64,7 +64,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_mongo" {
 
 resource "time_sleep" "index_availability_delay" {
   depends_on      = [opensearch_index.default_oss_index]
-  create_duration = "180s"
+  create_duration = "300s"
 }
 
 # – OpenSearch –
