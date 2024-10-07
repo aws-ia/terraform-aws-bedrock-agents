@@ -70,7 +70,7 @@ resource "aws_opensearchserverless_access_policy" "data_policy" {
             "collection/${awscc_opensearchserverless_collection.default_collection.name}"
           ]
           Permission = [
-            "aoss:*Collection"
+            "aoss:*"
           ]
         }
       ],
