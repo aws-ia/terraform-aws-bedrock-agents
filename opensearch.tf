@@ -61,12 +61,7 @@ resource "aws_opensearchserverless_access_policy" "data_policy" {
             "index/${awscc_opensearchserverless_collection.default_collection.name}/*"
           ]
           Permission = [
-            "aoss:CreateIndex",
-            "aoss:DeleteIndex", # Required for Terraform
-            "aoss:DescribeIndex",
-            "aoss:ReadDocument",
-            "aoss:UpdateIndex",
-            "aoss:WriteDocument"
+            "aoss:*"
           ]
         },
         {
@@ -75,15 +70,12 @@ resource "aws_opensearchserverless_access_policy" "data_policy" {
             "collection/${awscc_opensearchserverless_collection.default_collection.name}"
           ]
           Permission = [
-            "aoss:CreateCollectionItems",
-            "aoss:DescribeCollectionItems",
-            "aoss:UpdateCollectionItems",
-            "aoss:DeleteCollectionItems",
+            "aoss:*Collection"
           ]
         }
       ],
       Principal = [
-        # var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn,
+#         var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn,
         data.aws_caller_identity.current.arn
       ]
     }
@@ -91,7 +83,6 @@ resource "aws_opensearchserverless_access_policy" "data_policy" {
 }
 
 # OpenSearch index
-
 
 resource "time_sleep" "wait_before_index_creation" {
   depends_on      = [awscc_opensearchserverless_collection.default_collection]
