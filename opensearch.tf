@@ -2,17 +2,19 @@
 
 # Create a Collection
 resource "awscc_opensearchserverless_collection" "default_collection" {
+  count = var.create_default_kb ? 1 : 0
   name        = "default-collection-${random_string.solution_prefix.result}"
   type        = "VECTORSEARCH"
   description = "Default collection created by Amazon Bedrock Knowledge base."
   depends_on = [
-    aws_opensearchserverless_security_policy.security_policy,
-    aws_opensearchserverless_security_policy.nw_policy
+    aws_opensearchserverless_security_policy.security_policy[0],
+    aws_opensearchserverless_security_policy.nw_policy[0]
   ]
 }
 
 # Encryption Security Policy
 resource "aws_opensearchserverless_security_policy" "security_policy" {
+  count = var.create_default_kb ? 1 : 0
   name = "awscc-security-policy-${random_string.solution_prefix.result}"
   type = "encryption"
   policy = jsonencode({
@@ -28,6 +30,7 @@ resource "aws_opensearchserverless_security_policy" "security_policy" {
 
 # Network policy
 resource "aws_opensearchserverless_security_policy" "nw_policy" {
+  count = var.create_default_kb ? 1 : 0
   name = "nw-policy-${random_string.solution_prefix.result}"
   type = "network"
   policy = jsonencode([
@@ -50,6 +53,7 @@ resource "aws_opensearchserverless_security_policy" "nw_policy" {
 
 # Data policy
 resource "aws_opensearchserverless_access_policy" "data_policy" {
+  count = var.create_default_kb ? 1 : 0
   name = "os-access-policy-${random_string.solution_prefix.result}"
   type = "data"
   policy = jsonencode([
@@ -58,7 +62,7 @@ resource "aws_opensearchserverless_access_policy" "data_policy" {
         {
           ResourceType = "index"
           Resource = [
-            "index/${awscc_opensearchserverless_collection.default_collection.name}/*"
+            "index/${awscc_opensearchserverless_collection.default_collection[0].name}/*"
           ]
           Permission = [
             "aoss:*"
@@ -67,7 +71,7 @@ resource "aws_opensearchserverless_access_policy" "data_policy" {
         {
           ResourceType = "collection"
           Resource = [
-            "collection/${awscc_opensearchserverless_collection.default_collection.name}"
+            "collection/${awscc_opensearchserverless_collection.default_collection[0].name}"
           ]
           Permission = [
             "aoss:*"
@@ -85,11 +89,13 @@ resource "aws_opensearchserverless_access_policy" "data_policy" {
 # OpenSearch index
 
 resource "time_sleep" "wait_before_index_creation" {
-  depends_on      = [awscc_opensearchserverless_collection.default_collection]
+  count = var.create_default_kb ? 1 : 0
+  depends_on      = [awscc_opensearchserverless_collection.default_collectio[0]]
   create_duration = "60s" # Wait for 60 seconds before creating the index
 }
 
 resource "opensearch_index" "default_oss_index" {
+  count = var.create_default_kb ? 1 : 0
   name                           = "bedrock-knowledge-base-default-index-${random_string.solution_prefix.result}"
   number_of_shards               = "2"
   number_of_replicas             = "0"
@@ -123,6 +129,6 @@ resource "opensearch_index" "default_oss_index" {
     }
   EOF
   force_destroy                  = true
-  depends_on                     = [time_sleep.wait_before_index_creation,aws_opensearchserverless_access_policy.data_policy]
+  depends_on                     = [time_sleep.wait_before_index_creation,aws_opensearchserverless_access_policy.data_policy[0]]
 
 }
