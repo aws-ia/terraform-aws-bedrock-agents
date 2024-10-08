@@ -37,7 +37,7 @@ resource "aws_iam_role" "bedrock_knowledge_base_role" {
 
 # Attach a policy to allow necessary permissions for the Bedrock Knowledge Base
 resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
-  count = var.kb_role_arn != null ? 0 : 1
+  count = (var.kb_role_arn != null or var.create_kb == false) ? 0 : 1
   name  = "AmazonBedrockKnowledgeBasePolicy-${random_string.solution_prefix.result}"
 
   policy = jsonencode({
@@ -62,7 +62,7 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
         "Action" : [
           "aoss:*"
         ],
-        "Resource" : awscc_opensearchserverless_collection.default_collection.arn
+        "Resource" : awscc_opensearchserverless_collection.default_collection[0].arn
       },
       {
         "Effect" : "Allow",
