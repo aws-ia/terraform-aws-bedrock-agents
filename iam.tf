@@ -62,7 +62,7 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
         "Action" : [
           "aoss:*"
         ],
-        "Resource" : awscc_opensearchserverless_collection.default_collection[0].arn
+        "Resource" : module.opensearch_resources.default_collection.arn
       },
       {
         "Effect" : "Allow",
