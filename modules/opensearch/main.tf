@@ -1,8 +1,5 @@
 data "aws_caller_identity" "current" {}
-provider "opensearch" {
-  url         = awscc_opensearchserverless_collection.default_collection.collection_endpoint
-  healthcheck = false
-}
+
 # – OpenSearch Serverless Default –
 
 # Create a Collection
