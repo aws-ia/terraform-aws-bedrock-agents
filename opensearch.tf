@@ -123,6 +123,6 @@ resource "opensearch_index" "default_oss_index" {
     }
   EOF
   force_destroy                  = true
-  depends_on                     = [time_sleep.wait_before_index_creation]
+  depends_on                     = [time_sleep.wait_before_index_creation,aws_opensearchserverless_access_policy.data_policy]
 
 }
