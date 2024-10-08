@@ -25,6 +25,7 @@ terraform {
 }
 
 provider "opensearch" {
+  count = var.create_default_kb ? 1 : 0
   url         = awscc_opensearchserverless_collection.default_collection[0].collection_endpoint
   healthcheck = false
 }
