@@ -100,7 +100,7 @@ resource "awscc_s3_bucket" "s3_data_source" {
 }
 
 resource "aws_bedrockagent_data_source" "knowledge_base_ds" {
-  count             = 1
+  count             = var.create_default_kb ? 1 : 0
   knowledge_base_id = awscc_bedrock_knowledge_base.knowledge_base_default[0].id
   name              = "${random_string.solution_prefix.result}-${var.kb_name}DataSource"
   data_source_configuration {
