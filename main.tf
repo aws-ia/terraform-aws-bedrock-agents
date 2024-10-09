@@ -5,7 +5,7 @@ resource "random_string" "solution_prefix" {
 }
 
 module "opensearch_resources" {
-  count = var.create_default_kb ? 1 : 0
+  #count = var.create_default_kb ? 1 : 0
   source = "./modules/opensearch"
 
   solution_prefix = random_string.solution_prefix.result
