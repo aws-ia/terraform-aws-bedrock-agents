@@ -18,7 +18,7 @@ provider "awscc" {
 }
 
 provider "opensearch" {
-  url         = module.terraform-agents.default_collection.collection_endpoint != [] ? module.terraform-agents.default_collection[0].collection_endpoint : "https://localhost:8501"
+  url         = length(module.terraform-agents.default_collection.collection_endpoint) > 0 ? module.terraform-agents.default_collection[0].collection_endpoint : "https://localhost:8501"
   healthcheck = false
 }
 
