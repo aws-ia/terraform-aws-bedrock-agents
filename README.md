@@ -30,9 +30,7 @@ This file will contain any instructional information about this module.
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_opensearch_resources"></a> [opensearch\_resources](#module\_opensearch\_resources) | ./modules/opensearch | n/a |
+No modules.
 
 ## Resources
 
