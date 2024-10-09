@@ -24,6 +24,6 @@ provider "opensearch" {
 
 module "terraform-agents" {
   source = "../.." # local example
-  create_kb = false
-  create_default_kb = false
+  create_kb = true
+  create_default_kb = true
 }
