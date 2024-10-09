@@ -9,8 +9,8 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_default" {
   storage_configuration = {
     type = "OPENSEARCH_SERVERLESS"
     opensearch_serverless_configuration = {
-      collection_arn    = module.opensearch_resources.default_collection.arn
-      vector_index_name = module.opensearch_resources.opensearch_index.name
+      collection_arn    = module.opensearch_resources[0].default_collection.arn
+      vector_index_name = module.opensearch_resources[0].opensearch_index.name
       field_mapping = {
         metadata_field = var.metadata_field
         text_field     = var.text_field
@@ -65,7 +65,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_mongo" {
 
 resource "time_sleep" "index_availability_delay" {
   count           = var.create_default_kb ? 1 : 0
-  depends_on      = [module.opensearch_resources.opensearch_index]
+  depends_on      = [module.opensearch_resources[0].opensearch_index]
   create_duration = "60s"
 }
 
