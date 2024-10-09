@@ -25,6 +25,6 @@ terraform {
 }
 
 provider "opensearch" {
-  url         = module.opensearch_resources.default_collection.collection_endpoint ? module.opensearch_resources.default_collection.collection_endpoint : "https://localhost:8501"
+  url         = module.opensearch_resources.default_collection.collection_endpoint != null ? module.opensearch_resources.default_collection.collection_endpoint : "https://localhost:8501"
   healthcheck = false
 }
