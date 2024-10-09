@@ -85,7 +85,7 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
 
 # Attach the policy to the role
 resource "aws_iam_role_policy_attachment" "bedrock_knowledge_base_policy_attachment" {
-  count      = var.kb_role_arn != null ? 0 : 1
+  count      = var.kb_role_arn != null || var.create_kb == false ? 0 : 1
   role       = aws_iam_role.bedrock_knowledge_base_role[0].name
   policy_arn = aws_iam_policy.bedrock_knowledge_base_policy[0].arn
 }
