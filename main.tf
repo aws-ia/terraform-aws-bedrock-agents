@@ -4,13 +4,13 @@ resource "random_string" "solution_prefix" {
   upper   = false
 }
 
-module "opensearch_resources" {
-  #count = var.create_default_kb ? 1 : 0
-  source = "./modules/opensearch"
-
+/*module "opensearch_resources" {
+  count = var.create_default_kb ? 1 : 0
+  source = "./modules/opensearch-resources"
+  providers = {opensearch = opensearch.opensearch_provider}
   solution_prefix = random_string.solution_prefix.result
   kb_role_arn       = var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn
-}
+}*/
 
 # – Bedrock Agent –
 
