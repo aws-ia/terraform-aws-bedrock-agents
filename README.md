@@ -142,5 +142,7 @@ This file will contain any instructional information about this module.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_default_collection"></a> [default\_collection](#output\_default\_collection) | Opensearch default collection value. |
 <!-- END_TF_DOCS -->
