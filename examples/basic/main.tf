@@ -17,6 +17,11 @@ provider "awscc" {
   region = var.region
 }
 
+provider "opensearch" {
+  url         = module.terraform-agents.default_collection.collection_endpoint != null ? module.terraform-agents.default_collection.collection_endpoint : "https://localhost:8501"
+  healthcheck = false
+}
+
 module "terraform-agents" {
   source = "../.." # local example
   create_kb = false
