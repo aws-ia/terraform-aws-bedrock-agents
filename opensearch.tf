@@ -40,13 +40,25 @@ resource "aws_opensearchserverless_security_policy" "nw_policy" {
           ResourceType = "collection"
           Resource     = ["collection/default-collection-${random_string.solution_prefix.result}"]
         },
+      ]
+      AllowFromPublic = false, 
+      SourceVPCEs = [
+        aws_opensearchserverless_vpc_endpoint.vpc_endpoint.id
+      ]
+    },
+    {
+      Description = "Public access for dashboards",
+      Rules = [
         {
           ResourceType = "dashboard"
-          Resource     = ["collection/default-collection-${random_string.solution_prefix.result}"]
+          Resource = [
+            "collection/default-collection-${random_string.solution_prefix.result}"
+          ]
         }
-      ]
+      ],
       AllowFromPublic = true
     }
+
   ])
 }
 
@@ -131,4 +143,12 @@ resource "opensearch_index" "default_oss_index" {
   force_destroy                  = true
   depends_on                     = [time_sleep.wait_before_index_creation,aws_opensearchserverless_access_policy.data_policy[0]]
 
+}
+
+# Creates a VPC endpoint
+resource "aws_opensearchserverless_vpc_endpoint" "vpc_endpoint" {
+  name               = "example-vpc-endpoint"
+  vpc_id             = aws_vpc.vpc.id
+  subnet_ids         = [aws_subnet.subnet.id]
+  security_group_ids = [aws_security_group.security_group.id]
 }
