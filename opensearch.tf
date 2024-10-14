@@ -99,8 +99,6 @@ resource "opensearch_index" "default_oss_index" {
   name                           = "bedrock-knowledge-base-default-index-${random_string.solution_prefix.result}"
   number_of_shards               = "2"
   number_of_replicas             = "0"
-  index_knn                      = true
-  index_knn_algo_param_ef_search = "512"
   mappings                       = <<-EOF
     {
       "properties": {
