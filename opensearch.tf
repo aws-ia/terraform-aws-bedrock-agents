@@ -108,7 +108,7 @@ resource "opensearch_index" "default_oss_index" {
   name                           = "bedrock-knowledge-base-default-index-${random_string.solution_prefix.result}"
   number_of_shards               = "2"
   number_of_replicas             = "0"
-  mappings                       = <<-EOF
+  mappings                       = <<EOF
     {
       "properties": {
         "bedrock-knowledge-base-default-vector": {
