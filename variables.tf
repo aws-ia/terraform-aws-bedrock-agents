@@ -14,14 +14,12 @@ variable "agent_name" {
 variable "foundation_model" {
   description = "The foundation model for the Bedrock agent."
   type        = string
-  default     = "anthropic.claude-v2"
 }
 
 # instruction must be greater than 40 characters
 variable "instruction" {
   description = "A narrative instruction to provide the agent as context."
   type        = string
-  default     = "you are a chatbot eager to help the user find a new car."
 
   validation {
     condition     = length(var.instruction) >= 40

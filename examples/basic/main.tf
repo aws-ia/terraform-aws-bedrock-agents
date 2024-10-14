@@ -25,4 +25,6 @@ module "terraform-agents" {
   source = "../.." # local example
   create_kb = true
   create_default_kb = true
+  foundation_model = "anthropic.claude-v2"
+  instruction = "you are a chatbot eager to help the user find a new car."
 }

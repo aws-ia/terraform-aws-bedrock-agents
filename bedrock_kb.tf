@@ -10,7 +10,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_default" {
     type = "OPENSEARCH_SERVERLESS"
     opensearch_serverless_configuration = {
       collection_arn    =  awscc_opensearchserverless_collection.default_collection[0].arn
-      vector_index_name =  opensearch_index.default_oss_index[0].name  
+      vector_index_name = "${awscc_opensearchserverless_collection.default_collection[0].name}-index"
       field_mapping = {
         metadata_field = var.metadata_field
         text_field     = var.text_field
@@ -24,7 +24,6 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_default" {
       embedding_model_arn = var.kb_embedding_model_arn
     }
   }
-  depends_on = [time_sleep.index_availability_delay]
 }
 
 # – Existing KBs –
@@ -63,12 +62,6 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_mongo" {
 }
 
 
-resource "time_sleep" "index_availability_delay" {
-  count           = var.create_default_kb ? 1 : 0
-  depends_on      = [opensearch_index.default_oss_index[0]] 
-  create_duration = "60s"
-}
-
 # – OpenSearch –
 resource "awscc_bedrock_knowledge_base" "knowledge_base_opensearch" {
   count       = var.create_opensearch_config ? 1 : 0
@@ -95,7 +88,6 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_opensearch" {
       embedding_model_arn = var.kb_embedding_model_arn
     }
   }
-  depends_on = [time_sleep.index_availability_delay]
 }
 
 # – Pinecone –

@@ -40,13 +40,22 @@ resource "aws_opensearchserverless_security_policy" "nw_policy" {
           ResourceType = "collection"
           Resource     = ["collection/default-collection-${random_string.solution_prefix.result}"]
         },
+      ]
+      AllowFromPublic = true, 
+    },
+    {
+      Description = "Public access for dashboards",
+      Rules = [
         {
           ResourceType = "dashboard"
-          Resource     = ["collection/default-collection-${random_string.solution_prefix.result}"]
+          Resource = [
+            "collection/default-collection-${random_string.solution_prefix.result}"
+          ]
         }
-      ]
+      ],
       AllowFromPublic = true
     }
+
   ])
 }
 
