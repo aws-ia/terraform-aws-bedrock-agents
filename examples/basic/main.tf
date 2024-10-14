@@ -17,13 +17,10 @@ provider "awscc" {
   region = var.region
 }
 
-provider "opensearch" {
-  url         = length(module.terraform-agents.default_collection.collection_endpoint) > 0 ? module.terraform-agents.default_collection[0].collection_endpoint : "https://localhost:8501"
-  healthcheck = false
-}
-
 module "terraform-agents" {
   source = "../.." # local example
   create_kb = true
   create_default_kb = true
+  foundation_model = "anthropic.claude-v2"
+  instruction = "you are a chatbot eager to help the user find a new car."
 }

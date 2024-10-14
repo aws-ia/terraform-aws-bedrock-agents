@@ -41,10 +41,7 @@ resource "aws_opensearchserverless_security_policy" "nw_policy" {
           Resource     = ["collection/default-collection-${random_string.solution_prefix.result}"]
         },
       ]
-      AllowFromPublic = false, 
-      SourceVPCEs = [
-        aws_opensearchserverless_vpc_endpoint.vpc_endpoint.id
-      ]
+      AllowFromPublic = true, 
     },
     {
       Description = "Public access for dashboards",
@@ -104,51 +101,4 @@ resource "time_sleep" "wait_before_index_creation" {
   count = var.create_default_kb ? 1 : 0
   depends_on      = [awscc_opensearchserverless_collection.default_collection[0]]
   create_duration = "60s" # Wait for 60 seconds before creating the index
-}
-
-resource "opensearch_index" "default_oss_index" {
-  count = var.create_default_kb ? 1 : 0
-  name                           = "bedrock-knowledge-base-default-index-${random_string.solution_prefix.result}"
-  number_of_shards               = "2"
-  number_of_replicas             = "0"
-  index_knn                      = true
-  index_knn_algo_param_ef_search = "512"
-  mappings                       = <<-EOF
-    {
-      "properties": {
-        "bedrock-knowledge-base-default-vector": {
-          "type": "knn_vector",
-          "dimension": 1536,
-          "method": {
-            "name": "hnsw",
-            "engine": "faiss",
-            "parameters": {
-              "m": 16,
-              "ef_construction": 512
-            },
-            "space_type": "l2"
-          }
-        },
-        "AMAZON_BEDROCK_METADATA": {
-          "type": "text",
-          "index": "false"
-        },
-        "AMAZON_BEDROCK_TEXT_CHUNK": {
-          "type": "text",
-          "index": "true"
-        }
-      }
-    }
-  EOF
-  force_destroy                  = true
-  depends_on                     = [time_sleep.wait_before_index_creation,aws_opensearchserverless_access_policy.data_policy[0]]
-
-}
-
-# Creates a VPC endpoint
-resource "aws_opensearchserverless_vpc_endpoint" "vpc_endpoint" {
-  name               = "example-vpc-endpoint"
-  vpc_id             = aws_vpc.vpc.id
-  subnet_ids         = [aws_subnet.subnet.id]
-  security_group_ids = [aws_security_group.security_group.id]
 }
