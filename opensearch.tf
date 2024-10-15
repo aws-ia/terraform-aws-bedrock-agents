@@ -106,25 +106,10 @@ resource "time_sleep" "wait_before_index_creation" {
 resource "opensearch_index" "default_oss_index" {
   count = var.create_default_kb ? 1 : 0
   name                           = "bedrock-knowledge-base-default-index-${random_string.solution_prefix.result}"
-  #number_of_shards               = "2"
-  #number_of_replicas             = "0"
-  #force_destroy                  = true
-  #depends_on                     = [time_sleep.wait_before_index_creation,aws_opensearchserverless_access_policy.data_policy[0]]
-  number_of_shards   = 1
-  number_of_replicas = 1
-  mappings           = <<EOF
-  {
-    "people": {
-      "_all": {
-        "enabled": false
-      },
-      "properties": {
-        "email": {
-          "type": "text"
-        }
-      }
-    }
-  }
-  EOF
-
+  number_of_shards               = "1"
+  number_of_replicas             = "0"
+  index_knn                      = true
+  index_knn_algo_param_ef_search = "512"
+  force_destroy                  = true
+  depends_on                     = [time_sleep.wait_before_index_creation,aws_opensearchserverless_access_policy.data_policy[0]]
 }

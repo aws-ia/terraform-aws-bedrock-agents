@@ -10,8 +10,8 @@ terraform {
       version = ">= 1.0.0"
     }
     opensearch = {
-      source = "jamesanto/opensearch"
-      version = "2.0.3"
+      source  = "opensearch-project/opensearch"
+      version = "= 2.2.0"
     }
     time = {
       source  = "hashicorp/time"

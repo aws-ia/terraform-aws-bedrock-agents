@@ -19,6 +19,7 @@ provider "awscc" {
 
 provider "opensearch" {
   url         = length(module.terraform-agents.default_collection.collection_endpoint) > 0 ? module.terraform-agents.default_collection[0].collection_endpoint : null
+  healthcheck = false
 }
 
 module "terraform-agents" {
