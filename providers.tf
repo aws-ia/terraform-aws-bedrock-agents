@@ -11,7 +11,7 @@ terraform {
     }
     opensearch = {
       source  = "opensearch-project/opensearch"
-      version = "= 2.2.0"
+      version = "= 2.3.1"
     }
     time = {
       source  = "hashicorp/time"
