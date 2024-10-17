@@ -188,10 +188,10 @@ variable "create_kb" {
   default     = true
 }
 
-variable "create_default_kb" {
-  description = "Whether or not to create the default knowledge base."
+variable "create_data_source" {
+  description = "Whether or not to create S3 data source for the knowledge base."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "kb_s3_data_source" {

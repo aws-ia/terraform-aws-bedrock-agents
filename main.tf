@@ -8,7 +8,7 @@ resource "random_string" "solution_prefix" {
 
 locals {
   counter_kb        = var.create_kb ? [1] : []
-  knowledge_base_id = var.create_kb ? (var.create_default_kb ? awscc_bedrock_knowledge_base.knowledge_base_default[0].id : (var.create_mongo_config ? awscc_bedrock_knowledge_base.knowledge_base_mongo[0].id : (var.create_opensearch_config ? awscc_bedrock_knowledge_base.knowledge_base_opensearch[0].id : (var.create_pinecone_config ? awscc_bedrock_knowledge_base.knowledge_base_pinecone[0].id : (var.create_rds_config ? awscc_bedrock_knowledge_base.knowledge_base_rds[0].id : null))))) : null
+  knowledge_base_id = var.create_kb ? ((var.create_mongo_config ? awscc_bedrock_knowledge_base.knowledge_base_mongo[0].id : (var.create_opensearch_config ? awscc_bedrock_knowledge_base.knowledge_base_opensearch[0].id : (var.create_pinecone_config ? awscc_bedrock_knowledge_base.knowledge_base_pinecone[0].id : (var.create_rds_config ? awscc_bedrock_knowledge_base.knowledge_base_rds[0].id : null))))) : null
   knowledge_bases_value = {
     description          = var.kb_description
     knowledge_base_id    = var.create_kb ? local.knowledge_base_id : var.existing_kb
@@ -89,7 +89,7 @@ resource "awscc_bedrock_agent" "bedrock_agent" {
 
 # - Knowledge Base Data source –
 resource "awscc_s3_bucket" "s3_data_source" {
-  count       = var.kb_s3_data_source == null ? 1 : 0
+  count       = var.kb_s3_data_source == null && var.create_data_source == true ? 1 : 0
   bucket_name = "${random_string.solution_prefix.result}-${var.kb_name}-default-bucket"
 
   tags = [{
@@ -100,8 +100,8 @@ resource "awscc_s3_bucket" "s3_data_source" {
 }
 
 resource "aws_bedrockagent_data_source" "knowledge_base_ds" {
-  count             = var.create_default_kb ? 1 : 0
-  knowledge_base_id = awscc_bedrock_knowledge_base.knowledge_base_default[0].id
+  count             = var.create_data_source ? 1 : 0
+  knowledge_base_id = local.knowledge_base_id
   name              = "${random_string.solution_prefix.result}-${var.kb_name}DataSource"
   data_source_configuration {
     type = "S3"
