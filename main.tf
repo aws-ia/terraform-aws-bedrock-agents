@@ -144,9 +144,8 @@ resource "aws_bedrockagent_data_source" "knowledge_base_ds" {
       }
   
       step_to_apply = "POST_CHUNKING"
-      transformation_lambda_configuration {
-        lambda_arn = var.lambda_arn_transformation
-      }
+      lambda_arn = var.lambda_arn_transformation
+      
       
     }
     parsing_configuration {
