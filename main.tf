@@ -136,18 +136,6 @@ resource "aws_bedrockagent_data_source" "knowledge_base_ds" {
       }
 
     } 
-    custom_transformation_configuration {
-      intermediate_storage {
-        s3_location {
-          uri = var.s3_uri
-        }
-      }
-  
-      step_to_apply = "POST_CHUNKING"
-      lambda_arn = var.lambda_arn_transformation
-      
-      
-    }
     parsing_configuration {
       parsing_strategy = "BEDROCK_FOUNDATION_MODEL"
       bedrock_foundation_model_configuration {
