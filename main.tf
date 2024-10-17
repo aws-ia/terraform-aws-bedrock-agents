@@ -109,5 +109,55 @@ resource "aws_bedrockagent_data_source" "knowledge_base_ds" {
       bucket_arn = var.kb_s3_data_source == null ? awscc_s3_bucket.s3_data_source[0].arn : var.kb_s3_data_source # Create an S3 bucket or reference existing
     }
   }
+  data_deletion_policy = var.data_deletion_policy
+  description          = var.data_source_description
+  sever_side_encryption_configuration {
+    kms_key_arn = var.data_source_kms_key_arn
+  }
+  vector_ingestion_configuration {
+    chunking_configuration {
+      chunking_strategy = var.chunking_strategy
+      fixed_size_chunking_confugration {
+        max_tokens = var.max_tokens
+        overlap_percentage = var.overlap_percentage
+      }
+      hierarchical_chunking_configuration {
+        level_configuration {
+          max_tokens = var.level_config_max_tokens
+        }
+        overlap_tokens = var.overlap_tokens
+
+      }
+      semantic_chunking_configuration {
+        breakpoint_percentile_threshold = var.breakpoint_percentile_threshold
+        buffer_size = var.buffer_size
+        max_tokens = var.semantic_max_tokens
+
+      }
+
+    } 
+    custom_transformation_configuration {
+      intermediate_storage {
+        s3_location {
+          uri = var.s3_uri
+        }
+      }
+      transformation_function {
+        step_to_apply = "POST_CHUNKING"
+        transformation_lambda_configuration {
+          lambda_arn = var.lambda_arn_transformation
+        }
+      }
+    }
+    parsing_configuration {
+      parsing_strategy = "BEDROCK_FOUNDATION_MODEL"
+      bedrock_foundation_model_configuration {
+        model_arn = var.model_arn
+        parsing_prompt {
+          parsing_prompt_string = var.parsing_prompt_string
+        }
+      }
+    }
+  }
 }
 

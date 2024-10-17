@@ -321,6 +321,97 @@ variable "endpoint_service_name" {
   default     = null
 }
 
+# Data source
+
+variable "data_deletion_policy" {
+  description = "Data deletion policy for a data source. Valid values: RETAIN, DELETE."
+  type        = string
+  default     = null
+}
+
+variable "data_source_description" {
+  description = "Description of the data source."
+  type        = string
+  default     = null
+}
+
+variable "data_source_kms_key_arn" {
+  description = "ARN of the AWS KMS key used to encrypt the resource."
+  type        = string
+  default     = null
+}
+
+variable "chunking_strategy" {
+  description = "Option for chunking your source data, either in fixed-sized chunks or as one chunk. Valid values: FIXED_SIZE, HIERARCHICAL, SEMANTIC, NONE."
+  type        = string
+  default     = null
+}
+
+variable "max_tokens" {
+  description = "Maximum number of tokens to include in a chunk."
+  type        = string
+  default     = null
+}
+
+variable "overlap_percentage" {
+  description = "Percentage of overlap between adjacent chunks of a data source."
+  type        = string
+  default     = null
+}
+
+variable "level_config_max_tokens" {
+  description = "The maximum number of tokens that a chunk can contain in this layer."
+  type        = string
+  default     = null
+}
+
+variable "overlap_tokens" {
+  description = "The number of tokens to repeat across chunks in the same layer."
+  type        = string
+  default     = null
+}
+
+variable "breakpoint_percentile_threshold" {
+  description = "The dissimilarity threshold for splitting chunks."
+  type        = string
+  default     = null
+}
+
+variable "buffer_size" {
+  description = "The buffer size."
+  type        = string
+  default     = null
+}
+
+variable "semantic_max_tokens" {
+  description = "The maximum number of tokens a chunk can contain."
+  type        = string
+  default     = null
+}
+
+variable "s3_uri" {
+  description = "S3 URI for intermediate storage."
+  type        = string
+  default     = null
+}
+
+variable "lambda_arn_transformation" {
+  description = "The ARN of the lambda to use for custom transformation."
+  type        = string
+  default     = null
+}
+
+variable "model_arn" {
+  description = "The ARN of the model used to parse documents"
+  type        = string
+  default     = null
+}
+
+variable "parsing_prompt_string" {
+  description = "Instructions for interpreting the contents of the document."
+  type        = string
+  default     = null
+}
 
 # – Opensearch Serverless Configuration –
 # the default vector database 
