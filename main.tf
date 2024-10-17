@@ -142,12 +142,12 @@ resource "aws_bedrockagent_data_source" "knowledge_base_ds" {
           uri = var.s3_uri
         }
       }
-      transformation_function {
-        step_to_apply = "POST_CHUNKING"
-        transformation_lambda_configuration {
-          lambda_arn = var.lambda_arn_transformation
-        }
+  
+      step_to_apply = "POST_CHUNKING"
+      transformation_lambda_configuration {
+        lambda_arn = var.lambda_arn_transformation
       }
+      
     }
     parsing_configuration {
       parsing_strategy = "BEDROCK_FOUNDATION_MODEL"
