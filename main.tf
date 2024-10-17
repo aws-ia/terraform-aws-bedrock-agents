@@ -114,37 +114,5 @@ resource "aws_bedrockagent_data_source" "knowledge_base_ds" {
   server_side_encryption_configuration {
     kms_key_arn = var.data_source_kms_key_arn
   }
-  vector_ingestion_configuration {
-    chunking_configuration {
-      chunking_strategy = var.chunking_strategy
-      fixed_size_chunking_configuration {
-        max_tokens = var.max_tokens
-        overlap_percentage = var.overlap_percentage
-      }
-      hierarchical_chunking_configuration {
-        level_configuration {
-          max_tokens = var.level_config_max_tokens
-        }
-        overlap_tokens = var.overlap_tokens
-
-      }
-      semantic_chunking_configuration {
-        breakpoint_percentile_threshold = var.breakpoint_percentile_threshold
-        buffer_size = var.buffer_size
-        max_token = var.semantic_max_tokens
-
-      }
-
-    } 
-    parsing_configuration {
-      parsing_strategy = "BEDROCK_FOUNDATION_MODEL"
-      bedrock_foundation_model_configuration {
-        model_arn = var.model_arn
-        parsing_prompt {
-          parsing_prompt_string = var.parsing_prompt_string
-        }
-      }
-    }
-  }
 }
 
