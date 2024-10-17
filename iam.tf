@@ -15,7 +15,7 @@ resource "aws_iam_role_policy" "kb_policy" {
   policy = data.aws_iam_policy_document.knowledge_base_permissions[0].json
   role   = aws_iam_role.agent_role.id
 }
-/*
+
 # Define the IAM role for Amazon Bedrock Knowledge Base
 resource "aws_iam_role" "bedrock_knowledge_base_role" {
   count = var.kb_role_arn != null ? 0 : 1
