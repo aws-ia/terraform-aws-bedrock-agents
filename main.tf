@@ -111,13 +111,13 @@ resource "aws_bedrockagent_data_source" "knowledge_base_ds" {
   }
   data_deletion_policy = var.data_deletion_policy
   description          = var.data_source_description
-  sever_side_encryption_configuration {
+  server_side_encryption_configuration {
     kms_key_arn = var.data_source_kms_key_arn
   }
   vector_ingestion_configuration {
     chunking_configuration {
       chunking_strategy = var.chunking_strategy
-      fixed_size_chunking_confugration {
+      fixed_size_chunking_configuration {
         max_tokens = var.max_tokens
         overlap_percentage = var.overlap_percentage
       }
@@ -131,7 +131,7 @@ resource "aws_bedrockagent_data_source" "knowledge_base_ds" {
       semantic_chunking_configuration {
         breakpoint_percentile_threshold = var.breakpoint_percentile_threshold
         buffer_size = var.buffer_size
-        max_tokens = var.semantic_max_tokens
+        max_token = var.semantic_max_tokens
 
       }
 
