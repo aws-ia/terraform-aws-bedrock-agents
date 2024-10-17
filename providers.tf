@@ -9,10 +9,6 @@ terraform {
       source  = "hashicorp/awscc"
       version = ">= 1.0.0"
     }
-    opensearch = {
-      source  = "opensearch-project/opensearch"
-      version = "= 2.2.0"
-    }
     time = {
       source  = "hashicorp/time"
       version = "~> 0.6"
@@ -24,7 +20,3 @@ terraform {
   }
 }
 
-provider "opensearch" {
-  url         = length(awscc_opensearchserverless_collection.default_collection) > 0 ? awscc_opensearchserverless_collection.default_collection[0].collection_endpoint : "https://localhost:8501" 
-  healthcheck = false
-}
