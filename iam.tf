@@ -15,7 +15,7 @@ resource "aws_iam_role_policy" "kb_policy" {
   policy = data.aws_iam_policy_document.knowledge_base_permissions[0].json
   role   = aws_iam_role.agent_role.id
 }
-
+/*
 # Define the IAM role for Amazon Bedrock Knowledge Base
 resource "aws_iam_role" "bedrock_knowledge_base_role" {
   count = var.kb_role_arn != null ? 0 : 1
@@ -34,7 +34,7 @@ resource "aws_iam_role" "bedrock_knowledge_base_role" {
     ]
   })
 }
-
+/*
 # Attach a policy to allow necessary permissions for the Bedrock Knowledge Base
 resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
   count = var.kb_role_arn != null || var.create_kb == false ? 0 : 1
@@ -100,8 +100,9 @@ resource "aws_iam_role_policy" "bedrock_kb_oss" {
       {
         Action   = ["aoss:*"]
         Effect   = "Allow"
-        Resource = ["arn:aws:aoss:${local.region}:${local.account_id}:*/*"]
+        Resource = ["arn:aws:aoss:${local.region}:${local.account_id}:*//*"]
       }
     ]
   })
 }
+*/
