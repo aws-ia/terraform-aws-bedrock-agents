@@ -1,4 +1,6 @@
 <!-- BEGIN_TF_DOCS -->
+This example shows how to deploy an extended Bedrock agent, creating a default Opensearch Serverless knowledgebase with an S3 datasource.
+
 ## Requirements
 
 No requirements.
