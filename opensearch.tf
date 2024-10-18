@@ -2,7 +2,7 @@
 
 # Create a Collection
 resource "awscc_opensearchserverless_collection" "default_collection" {
-  count = var.create_default_kb ? 1 : 0
+  count       = var.create_default_kb ? 1 : 0
   name        = "default-collection-${random_string.solution_prefix.result}"
   type        = "VECTORSEARCH"
   description = "Default collection created by Amazon Bedrock Knowledge base."
@@ -15,8 +15,8 @@ resource "awscc_opensearchserverless_collection" "default_collection" {
 # Encryption Security Policy
 resource "aws_opensearchserverless_security_policy" "security_policy" {
   count = var.create_default_kb ? 1 : 0
-  name = "awscc-security-policy-${random_string.solution_prefix.result}"
-  type = "encryption"
+  name  = "awscc-security-policy-${random_string.solution_prefix.result}"
+  type  = "encryption"
   policy = jsonencode({
     Rules = [
       {
@@ -31,8 +31,8 @@ resource "aws_opensearchserverless_security_policy" "security_policy" {
 # Network policy
 resource "aws_opensearchserverless_security_policy" "nw_policy" {
   count = var.create_default_kb ? 1 : 0
-  name = "nw-policy-${random_string.solution_prefix.result}"
-  type = "network"
+  name  = "nw-policy-${random_string.solution_prefix.result}"
+  type  = "network"
   policy = jsonencode([
     {
       Rules = [
@@ -41,7 +41,7 @@ resource "aws_opensearchserverless_security_policy" "nw_policy" {
           Resource     = ["collection/default-collection-${random_string.solution_prefix.result}"]
         },
       ]
-      AllowFromPublic = true, 
+      AllowFromPublic = true,
     },
     {
       Description = "Public access for dashboards",
@@ -63,8 +63,8 @@ resource "aws_opensearchserverless_security_policy" "nw_policy" {
 # Data policy
 resource "aws_opensearchserverless_access_policy" "data_policy" {
   count = var.create_default_kb ? 1 : 0
-  name = "os-access-policy-${random_string.solution_prefix.result}"
-  type = "data"
+  name  = "os-access-policy-${random_string.solution_prefix.result}"
+  type  = "data"
   policy = jsonencode([
     {
       Rules = [
@@ -98,15 +98,15 @@ resource "aws_opensearchserverless_access_policy" "data_policy" {
 # OpenSearch index
 
 resource "time_sleep" "wait_before_index_creation" {
-  count = var.create_default_kb ? 1 : 0
+  count           = var.create_default_kb ? 1 : 0
   depends_on      = [awscc_opensearchserverless_collection.default_collection[0]]
   create_duration = "60s" # Wait for 60 seconds before creating the index
 }
 
 resource "opensearch_index" "default_oss_index" {
-  count = var.create_default_kb ? 1 : 0
+  count                          = var.create_default_kb ? 1 : 0
   name                           = "bedrock-knowledge-base-default-index-${random_string.solution_prefix.result}"
-  number_of_shards               = "1"
+  number_of_shards               = "2"
   number_of_replicas             = "0"
   index_knn                      = true
   index_knn_algo_param_ef_search = "512"
@@ -138,5 +138,33 @@ resource "opensearch_index" "default_oss_index" {
     }
   EOF
   force_destroy                  = true
-  depends_on                     = [time_sleep.wait_before_index_creation,aws_opensearchserverless_access_policy.data_policy[0]]
+  depends_on                     = [time_sleep.wait_before_index_creation, aws_opensearchserverless_access_policy.data_policy[0]]
+
+  mappings = <<-EOF
+    {
+      "properties": {
+        "bedrock-knowledge-base-default-vector": {
+          "type": "knn_vector",
+          "dimension": 1536,
+          "method": {
+            "name": "hnsw",
+            "engine": "faiss",
+            "parameters": {
+              "m": 16,
+              "ef_construction": 512
+            },
+            "space_type": "l2"
+          }
+        },
+        "AMAZON_BEDROCK_METADATA": {
+          "type": "text",
+          "index": "false"
+        },
+        "AMAZON_BEDROCK_TEXT_CHUNK": {
+          "type": "text",
+          "index": "true"
+        }
+      }
+    }
+  EOF
 }
