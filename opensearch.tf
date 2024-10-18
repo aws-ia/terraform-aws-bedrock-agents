@@ -71,7 +71,7 @@ resource "aws_opensearchserverless_access_policy" "data_policy" {
         {
           ResourceType = "index"
           Resource = [
-            "index/${awscc_opensearchserverless_collection.default_collection[0].name}/*"
+            "index/default-collection-${random_string.solution_prefix.result}/*"
           ]
           Permission = [
             "aoss:*"
@@ -80,7 +80,7 @@ resource "aws_opensearchserverless_access_policy" "data_policy" {
         {
           ResourceType = "collection"
           Resource = [
-            "collection/${awscc_opensearchserverless_collection.default_collection[0].name}"
+            "collection/default-collection-${random_string.solution_prefix.result}}"
           ]
           Permission = [
             "aoss:*"
@@ -89,8 +89,7 @@ resource "aws_opensearchserverless_access_policy" "data_policy" {
       ],
       Principal = [
         var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn,
-        data.aws_caller_identity.current.arn,
-        "arn:aws:sts::${local.account_id}:assumed-role/Admin/*"
+        data.aws_caller_identity.current.arn
       ]
     }
   ])
