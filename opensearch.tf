@@ -71,7 +71,7 @@ resource "aws_opensearchserverless_access_policy" "data_policy" {
         {
           ResourceType = "index"
           Resource = [
-            "index/default-collection-${random_string.solution_prefix.result}/*"
+            "index/${awscc_opensearchserverless_collection.default_collection[0].name}/*"
           ]
           Permission = [
             "aoss:*"
@@ -80,7 +80,7 @@ resource "aws_opensearchserverless_access_policy" "data_policy" {
         {
           ResourceType = "collection"
           Resource = [
-            "collection/default-collection-${random_string.solution_prefix.result}}"
+            "collection/${awscc_opensearchserverless_collection.default_collection[0].name}"
           ]
           Permission = [
             "aoss:*"
