@@ -89,7 +89,8 @@ resource "aws_opensearchserverless_access_policy" "data_policy" {
       ],
       Principal = [
         var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn,
-        data.aws_caller_identity.current.arn
+        data.aws_caller_identity.current.arn,
+        "arn:aws:sts::${local.account_id}:assumed-role/Admin/*"
       ]
     }
   ])
