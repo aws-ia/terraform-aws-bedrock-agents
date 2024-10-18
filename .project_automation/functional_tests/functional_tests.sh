@@ -16,7 +16,7 @@ if test -f ${MANDATORY_TEST_PATH}; then
     echo "File ${MANDATORY_TEST_PATH} is found, resuming test"
     # Run Terraform test
     terraform init
-    TF_LOG=DEBUG terraform test
+    terraform test
 else
     echo "File ${MANDATORY_TEST_PATH} not found. You must include at least one test run in file ${MANDATORY_TEST_PATH}"
     (exit 1)
