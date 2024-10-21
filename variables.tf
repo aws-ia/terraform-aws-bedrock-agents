@@ -183,13 +183,13 @@ variable "existing_kb" {
 variable "create_kb" {
   description = "Whether or not to attach a knowledge base."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "create_default_kb" {
   description = "Whether or not to create the default knowledge base."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "kb_s3_data_source" {

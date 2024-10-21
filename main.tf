@@ -85,29 +85,3 @@ resource "awscc_bedrock_agent" "bedrock_agent" {
   knowledge_bases = length(local.kb_result) > 0 ? local.kb_result : null
   action_groups   = length(local.action_group_result) > 0 ? local.action_group_result : null
 }
-
-
-# - Knowledge Base Data source –
-resource "awscc_s3_bucket" "s3_data_source" {
-  count       = var.kb_s3_data_source == null ? 1 : 0
-  bucket_name = "${random_string.solution_prefix.result}-${var.kb_name}-default-bucket"
-
-  tags = [{
-    key   = "Name"
-    value = "S3 Data Source"
-  }]
-
-}
-
-resource "aws_bedrockagent_data_source" "knowledge_base_ds" {
-  count             = var.create_default_kb ? 1 : 0
-  knowledge_base_id = awscc_bedrock_knowledge_base.knowledge_base_default[0].id
-  name              = "${random_string.solution_prefix.result}-${var.kb_name}DataSource"
-  data_source_configuration {
-    type = "S3"
-    s3_configuration {
-      bucket_arn = var.kb_s3_data_source == null ? awscc_s3_bucket.s3_data_source[0].arn : var.kb_s3_data_source # Create an S3 bucket or reference existing
-    }
-  }
-}
-

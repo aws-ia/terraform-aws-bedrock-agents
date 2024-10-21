@@ -27,5 +27,5 @@ module "terraform-agents" {
   create_kb = true
   create_default_kb = true
   foundation_model = "anthropic.claude-v2"
-  instruction = "you are a chatbot eager to help the user find a new car."
+  instruction = "You are an automotive assisant who can provide detailed information about cars to a customer."
 }

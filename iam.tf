@@ -18,7 +18,7 @@ resource "aws_iam_role_policy" "kb_policy" {
 
 # Define the IAM role for Amazon Bedrock Knowledge Base
 resource "aws_iam_role" "bedrock_knowledge_base_role" {
-  count = var.kb_role_arn != null ? 0 : 1
+  count = var.kb_role_arn != null || var.create_default_kb == false ? 0 : 1
   name  = "AmazonBedrockExecutionRoleForKnowledgeBase-${random_string.solution_prefix.result}"
 
   assume_role_policy = jsonencode({
@@ -37,7 +37,7 @@ resource "aws_iam_role" "bedrock_knowledge_base_role" {
 
 # Attach a policy to allow necessary permissions for the Bedrock Knowledge Base
 resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
-  count = var.kb_role_arn != null || var.create_kb == false ? 0 : 1
+  count = var.kb_role_arn != null || var.create_default_kb == false ? 0 : 1
   name  = "AmazonBedrockKnowledgeBasePolicy-${random_string.solution_prefix.result}"
 
   policy = jsonencode({
@@ -91,7 +91,7 @@ resource "aws_iam_role_policy_attachment" "bedrock_knowledge_base_policy_attachm
 }
 
 resource "aws_iam_role_policy" "bedrock_kb_oss" {
-  count = var.kb_role_arn != null ? 0 : 1
+  count = var.kb_role_arn != null || var.create_default_kb == false ? 0 : 1
   name  = "AmazonBedrockOSSPolicyForKnowledgeBase_${var.kb_name}"
   role  = aws_iam_role.bedrock_knowledge_base_role[count.index].name
   policy = jsonencode({

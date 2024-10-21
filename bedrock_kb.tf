@@ -61,7 +61,6 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_mongo" {
   }
 }
 
-
 # – OpenSearch –
 resource "awscc_bedrock_knowledge_base" "knowledge_base_opensearch" {
   count       = var.create_opensearch_config ? 1 : 0
@@ -145,6 +144,30 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_rds" {
     type = var.kb_type
     vector_knowledge_base_configuration = {
       embedding_model_arn = var.kb_embedding_model_arn
+    }
+  }
+}
+
+# - Knowledge Base Data source –
+resource "awscc_s3_bucket" "s3_data_source" {
+  count       = var.kb_s3_data_source == null && var.create_default_kb == true ? 1 : 0
+  bucket_name = "${random_string.solution_prefix.result}-${var.kb_name}-default-bucket"
+
+  tags = [{
+    key   = "Name"
+    value = "S3 Data Source"
+  }]
+
+}
+
+resource "aws_bedrockagent_data_source" "knowledge_base_ds" {
+  count             = var.create_default_kb ? 1 : 0
+  knowledge_base_id = awscc_bedrock_knowledge_base.knowledge_base_default[0].id
+  name              = "${random_string.solution_prefix.result}-${var.kb_name}DataSource"
+  data_source_configuration {
+    type = "S3"
+    s3_configuration {
+      bucket_arn = var.kb_s3_data_source == null ? awscc_s3_bucket.s3_data_source[0].arn : var.kb_s3_data_source # Create an S3 bucket or reference existing
     }
   }
 }
