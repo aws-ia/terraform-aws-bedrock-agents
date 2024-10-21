@@ -18,14 +18,14 @@ provider "awscc" {
 }
 
 provider "opensearch" {
-  url         = "n/a"
+  url         = module.terraform-agents.default_collection[0].collection_endpoint 
   healthcheck = false
 }
 
 module "terraform-agents" {
   source = "../.." # local example
-  create_kb = false
-  create_default_kb = false
+  create_kb = true
+  create_default_kb = true
   foundation_model = "anthropic.claude-v2"
   instruction = "You are an automotive assisant who can provide detailed information about cars to a customer."
 }
