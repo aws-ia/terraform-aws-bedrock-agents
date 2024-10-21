@@ -36,7 +36,7 @@ module "terraform-agents" {
 
 ### Knowledge Base - Data Sources
 
-Data sources are the various repositories or systems from which information is extracted and ingested into the knowledge base. These sources provide the raw content that will be processed, indexed, and made available for querying within the knowledge base system. Data sources can include various types of systems such as document management systems, databases, file storage systems, and content management platforms. Suuported Data Sources include Amazon S3 buckets, Web Crawlers, SharePoint sites, Salesforce instances, and Confluence spaces.
+Data sources are the various repositories or systems from which information is extracted and ingested into the knowledge base. These sources provide the raw content that will be processed, indexed, and made available for querying within the knowledge base system. Data sources can include various types of systems such as document management systems, databases, file storage systems, and content management platforms. Supported Data Sources include Amazon S3 buckets.
 
 - Amazon S3. You can either create a new data source by passing in the existing data source arn to the input variable `kb_s3_data_source` or create a new one by leaving that value as `null` when `create_default_kb` is set to true.
 
