@@ -18,6 +18,7 @@ The resource accepts an instruction prop that is provided to any Bedrock Agent i
 To create a knowledge base, make sure you pass in the appropriate variables and set the `create_kb` variable to `true`.
 
 Example default Opensearch Serverless Agent with Knowledgebase
+
 ```
 provider "opensearch" {
   url         = module.terraform-agents.default_collection[0].collection_endpoint
@@ -44,6 +45,7 @@ Data sources are the various repositories or systems from which information is e
 Enable generative AI applications to execute multistep tasks across company systems and data sources.
 
 ### Create an Agent
+
 The following example creates an Agent with a simple instruction and without any action groups or knowedlge bases.
 
 ```
