@@ -17,6 +17,11 @@ provider "awscc" {
   region = var.region
 }
 
+provider "opensearch" {
+  url         = "n/a"
+  healthcheck = false
+}
+
 module "terraform-agents" {
   source = "../.." # local example
   create_kb = false
